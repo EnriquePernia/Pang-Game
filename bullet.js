@@ -19,14 +19,8 @@ Bullet.prototype.draw= function(){
 
 Bullet.prototype.seeIfLimit = function(){
      if(this.sY<=-740){
-          this.stop();
           return true;
      }
-}
-
-Bullet.prototype.stop = function(){
-this.vY=0
-this.sY=0;
 }
 
 

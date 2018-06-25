@@ -50,6 +50,33 @@ Ball.prototype.stop = function(){
      this.gravity=0;
 }
 
+Ball.prototype.popBig = function(){
+     var pop=[]
+     pop.push(new Ball(this.ctx,this.x,this.y,this.radius-15));
+     pop.push(new Ball(this.ctx,this.x,this.y,this.radius-15));
+     pop[0].sX=this.sX;
+     pop[1].sX=-this.sX;
+     pop[0].gravity=0.015;
+     pop[1].gravity=0.015;
+     pop[0].type="medium";
+     pop[1].type="medium";
+     return pop;     
+}
+
+Ball.prototype.popMedium = function(){
+     var pop=[];
+     pop.push(new Ball(this.ctx,this.x,this.y,this.radius-15));
+     pop.push(new Ball(this.ctx,this.x,this.y,this.radius-15));
+     pop[0].sX=this.sX;
+     pop[1].sX=-this.sX;
+     pop[0].gravity=0.02;
+     pop[1].gravity=0.02;
+     pop[0].type="little";
+     pop[1].type="little";
+     return pop
+}
+
+
 
 Ball.prototype.update = function () {
      //this.ctx.clearRect(0,0,1000,800);
