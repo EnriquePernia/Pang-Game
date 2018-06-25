@@ -59,7 +59,6 @@ Ball.prototype.stop = function(){
 }
 
 Ball.prototype.move = function(){
-     this.sY = 0;
      this.sX = 1;
      this.gravity = 0.01;
 }

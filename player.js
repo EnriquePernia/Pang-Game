@@ -114,7 +114,6 @@ Player.prototype.checkPowerUp = function () {
           case "speed":
                this.move();
                setTimeout(function () {
-                    console.log("yeah")
                     that.powerUp = 0;
                }, 5000)
                break;
@@ -134,18 +133,19 @@ Player.prototype.checkPowerUp = function () {
                //           }
                //      }
                //      break;
-               // case "time":
-               //      for (i = 0; i < this.ball.length; i++) {
-               //           this.ball[i].stop();
-               //      }
-               //      setTimeout(function(){
-               //           for (i = 0; i < this.ball.length; i++) {
-               //           this.ball[i].move();
-               //           }
-               //           this.powerUp=0;
-               //      },2000)
+               case "time":
+               var that=this;
+                    for (i = 0; i < this.ball.length; i++) {
+                         this.ball[i].stop();
+                    }
+                    setTimeout(function(){
+                         for (i = 0; i < that.ball.length; i++) {
+                         that.ball[i].move();
+                         }
+                         that.powerUp=0;
+                    },2000)
 
-               //      break;
+                    break;
      }
 }
 

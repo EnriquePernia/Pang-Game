@@ -1,4 +1,4 @@
-function powerUp(ctx, name,player) {
+function PowerUp(ctx, name,player) {
      this.y = 200;
      this.player=player;
      this.width = 50;
@@ -23,13 +23,13 @@ function powerUp(ctx, name,player) {
        }
 }
 
-powerUp.prototype.checkCollisions = function(){
+PowerUp.prototype.checkCollisions = function(){
      if(this.x<this.player.x+80 && this.x+this.width>this.player.x){
           return true;
      }
 }
 
-powerUp.prototype.draw = function () {
+PowerUp.prototype.draw = function () {
      if(this.img==0){
           this.ctx.lineTo(0,0,0,0);
           return false;
@@ -37,14 +37,14 @@ powerUp.prototype.draw = function () {
      this.ctx.drawImage(this.img, this.x, this.y,this.width,this.height);
 }
 
-powerUp.prototype.move = function(){
+PowerUp.prototype.move = function(){
      if(this.y>=720){
           this.vy=0;
      }
      this.y+=this.vy;
 }
 
-powerUp.prototype.update = function(){
+PowerUp.prototype.update = function(){
      this.draw();
      this.move();
      return this.checkCollisions();
