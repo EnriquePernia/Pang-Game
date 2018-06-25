@@ -9,6 +9,7 @@ function Player(x, y, ctx, ball) {
      this.img.src = "images/Estrella.png";
      this.setListeners();
      this.bullets = [];
+     this.powerUp;
 }
 
 Player.prototype.draw = function () {
@@ -65,19 +66,21 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 }
 
 Player.prototype.checkCollisions = function () {
-     for (i = 0; i < this.bullets.length; i++) {
-          for (j = 0; j < this.ball.length; j++) {
-               if (this.bullets.length > 0) {
+     if (this.bullets.length > 0) {
+          for (i = 0; i < this.bullets.length; i++) {
+               for (j = 0; j < this.ball.length; j++) {
                     if (this.bullets[i].x + 10 >= this.ball[j].x - this.ball[j].radius && this.bullets[i].x <= this.ball[j].x + this.ball[j].radius) {
                          if (this.ball[j].y >= 720 + this.bullets[i].sY) {
                               if (this.ball[j].type == "big") {
                                    var p = this.ball[j].popBig();
-                                   console.log(p)
                                    this.ball.push(p[0]);
                                    this.ball.push(p[1]);
-                              }
-                              else if(this.ball[j].type == "medium"){
+                              } else if (this.ball[j].type == "medium") {
                                    var p = this.ball[j].popMedium();
+                                   this.ball.push(p[0]);
+                                   this.ball.push(p[1]);
+                              } else if (this.ball[j].type == "little") {
+                                   var p = this.ball[j].popLittle();
                                    this.ball.push(p[0]);
                                    this.ball.push(p[1]);
                               }
@@ -91,11 +94,21 @@ Player.prototype.checkCollisions = function () {
      for (i = 0; i < this.ball.length; i++) {
           if (this.x + 70 >= this.ball[i].x - this.ball[i].radius && this.x <= this.ball[i].x + this.ball[i].radius) {
                if (this.ball[i].y + this.ball[i].radius >= 700) {
-                    this.ball[i].stop();
+                    this.loose();
+                    this.ball.splice(i,1);
                     this.vx = 0;
                }
           }
      }
+}
+
+Player.prototype.checkPowerUp = function(){
+     
+}
+
+Player.prototype.loose = function(){
+     alert("Perdiste")
+     location.reload();
 }
 
 Player.prototype.update = function () {
@@ -108,9 +121,15 @@ Player.prototype.update = function () {
           }
 
      }
-   
+
      for (i = 0; i < this.ball.length; i++) {
-          this.ball[i].update();
+          if(this.ball[i].principio==true){
+               this.ball[i].update();
+               this.ball[i].principio=false;
+          }
+          else{
+               this.ball[i].update();
+          }
      }
      this.checkCollisions();
 }
