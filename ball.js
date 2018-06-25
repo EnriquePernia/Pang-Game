@@ -8,7 +8,6 @@ function Ball(ctx,x,y,radius) {
      this.sX = 1;
      this.gravity = 0.01;
      this.bouncePower = -3.6;
-     this.balls=[];
 }
 
 Ball.prototype.draw = function () {
@@ -50,21 +49,7 @@ Ball.prototype.stop = function(){
      this.sY=0;
      this.gravity=0;
 }
-Ball.prototype.pop = function () {
-     this.balls.push(new Ball(this.ctx,this.x,this.y,30))
-     this.balls.push(new Ball(this.ctx,this.x,this.y,30))
-     this.remove();
-}
 
-// Ball.prototype.type = fuction(e){
-//      switch e:
-//           case "big":
-//           break;
-//           case "medium":
-//           break;
-//           case "little":
-//           break;
-// }
 
 Ball.prototype.update = function () {
      //this.ctx.clearRect(0,0,1000,800);
@@ -77,9 +62,4 @@ Ball.prototype.update = function () {
      }
      this.speedY();
      this.speedX();
-     if(this.balls.legth!=0){
-          for(i=0;i<this.balls.length;i++){
-               this.balls[i].update();
-          }
-     }
 }

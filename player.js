@@ -60,20 +60,30 @@ Player.prototype.shoot = function () {
 }
 
 Player.prototype.checkCollisions = function () {
-     if (this.ball.x == this.x && this.ball.y + 40 == this.y - 80) {
-          this.vx = 0;
-     }
+     // for (i = 0; i < this.ball.length; i++) {
+     //      if (this.ball[i].x == this.x && this.ball[i].y + 40 == this.y - 80) {
+     //           this.vx = 0;
+     //      }
+     // }
      for (i = 0; i < this.bullets.length; i++) {
-          if (this.bullets[i].x + 10 >= this.ball.x - 50 && this.bullets[i].x <= this.ball.x + 50) {
-               if (this.ball.y >= 720 + this.bullets[i].sY) {
-                    this.ball.pop();
-                    this.bullets[i].stop();
+          for (j = 0; j < this.ball.length; j++) {
+               if (this.bullets[i].x + 10 >= this.ball[j].x - 50 && this.bullets[i].x <= this.ball[j].x + 50) {
+                    if (this.ball[j].y >= 720 + this.bullets[i].sY) {
+                         this.ball.splice(j, 1);
+                         this.bullets.splice(i,1);
+                         this.ball.push(new Ball(this.ctx, this.x, this.y, this.radius - 20));
+                         this.ball.push(new Ball(this.ctx, this.x, this.y, this.radius - 20))
+                         console.log(this.ball)
+                    }
                }
           }
      }
-     if (this.x + 70 >= this.ball.x - 50 && this.x <= this.ball.x + 50) {
-          if (this.ball.y+50>= 700) {
-               this.ball.stop();
+     for (i = 0; i < this.ball.length; i++) {
+          if (this.x + 70 >= this.ball[i].x - 50 && this.x <= this.ball[i].x + 50) {
+               if (this.ball[i].y + 50 >= 700) {
+                    this.ball[i].stop();
+                    this.vx=0;
+               }
           }
      }
 }
@@ -87,6 +97,9 @@ Player.prototype.update = function () {
                this.bullets.slice(1, i);
           }
 
+     }
+     for (i = 0; i < this.ball.length; i++) {
+          this.ball[i].update();
      }
      this.checkCollisions();
 }
