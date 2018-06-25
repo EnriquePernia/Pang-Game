@@ -1,9 +1,9 @@
 function powerUp(ctx, name,player) {
-     this.y = 720;
+     this.y = 200;
      this.player=player;
-     this.width = 40;
-     this.height = 40;
-     this.vy = 4;
+     this.width = 50;
+     this.height = 50;
+     this.vy = 1;
      this.ctx = ctx;
      this.name = name
 
@@ -37,7 +37,15 @@ powerUp.prototype.draw = function () {
      this.ctx.drawImage(this.img, this.x, this.y,this.width,this.height);
 }
 
+powerUp.prototype.move = function(){
+     if(this.y>=720){
+          this.vy=0;
+     }
+     this.y+=this.vy;
+}
+
 powerUp.prototype.update = function(){
      this.draw();
+     this.move();
      return this.checkCollisions();
 }

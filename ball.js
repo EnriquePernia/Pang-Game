@@ -7,7 +7,7 @@ function Ball(ctx,x,y,radius) {
      this.sY = 0;
      this.sX = 1;
      this.gravity = 0.01;
-     this.bouncePower = -3.6;
+     this.bouncePower = -3.5;
      this.principio=true;
      this.jumpy=-1.5;
 }
@@ -56,6 +56,12 @@ Ball.prototype.stop = function(){
      this.sX=0
      this.sY=0;
      this.gravity=0;
+}
+
+Ball.prototype.move = function(){
+     this.sY = 0;
+     this.sX = 1;
+     this.gravity = 0.01;
 }
 
 Ball.prototype.popBig = function(){

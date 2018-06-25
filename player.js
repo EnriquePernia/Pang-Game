@@ -20,13 +20,17 @@ Player.prototype.draw = function () {
 }
 
 
-Player.prototype.move = function () {
+Player.prototype.move = function (speed) {
      if (this.x >= 920) {
           this.x -= 0.1;
      } else if (this.x <= 0) {
           this.x += 0.1;
      } else {
-          this.x += this.vx;
+          if (speed != undefined) {
+               this.x += this.vx * speed;
+          } else {
+               this.x += this.vx
+          }
      }
 }
 
@@ -36,9 +40,11 @@ Player.prototype.setListeners = function () {
           switch (e.keyCode) {
                case 37:
                     that.vx = -1;
+
                     break;
                case 39:
                     that.vx = 1;
+
                     break;
                case 32:
                     that.shoot();
@@ -95,18 +101,55 @@ Player.prototype.checkCollisions = function () {
           if (this.x + 70 >= this.ball[i].x - this.ball[i].radius && this.x <= this.ball[i].x + this.ball[i].radius) {
                if (this.ball[i].y + this.ball[i].radius >= 700) {
                     this.loose();
-                    this.ball.splice(i,1);
+                    this.ball.splice(i, 1);
                     this.vx = 0;
                }
           }
      }
 }
 
-Player.prototype.checkPowerUp = function(){
-     
+Player.prototype.checkPowerUp = function () {
+     var that = this;
+     switch (this.powerUp) {
+          case "speed":
+               this.move();
+               setTimeout(function () {
+                    console.log("yeah")
+                    that.powerUp = 0;
+               }, 5000)
+               break;
+               // case "hacker":
+               // var min=1000
+               // var index;
+               //      for (i = 0; i < this.ball.length; i++) {
+               //           if((this.ball[i].x+this.ball[i].y)-(this.x+this.y)<min){
+               //                min=(this.ball[i].x+this.ball[i].y)-(this.x+this.y);
+               //                index=i;
+               //           }
+               //      }
+               //      for(i=0;i<20000;i++){
+               //           for(j=0;j<this.bullets.length;j++){
+               //                this.bullets[j].sX=this.ball[index].x;
+               //                this.bullets[j].sY=this.ball[index].y;
+               //           }
+               //      }
+               //      break;
+               // case "time":
+               //      for (i = 0; i < this.ball.length; i++) {
+               //           this.ball[i].stop();
+               //      }
+               //      setTimeout(function(){
+               //           for (i = 0; i < this.ball.length; i++) {
+               //           this.ball[i].move();
+               //           }
+               //           this.powerUp=0;
+               //      },2000)
+
+               //      break;
+     }
 }
 
-Player.prototype.loose = function(){
+Player.prototype.loose = function () {
      alert("Perdiste")
      location.reload();
 }
@@ -123,13 +166,13 @@ Player.prototype.update = function () {
      }
 
      for (i = 0; i < this.ball.length; i++) {
-          if(this.ball[i].principio==true){
+          if (this.ball[i].principio == true) {
                this.ball[i].update();
-               this.ball[i].principio=false;
-          }
-          else{
+               this.ball[i].principio = false;
+          } else {
                this.ball[i].update();
           }
      }
+     this.checkPowerUp();
      this.checkCollisions();
 }
