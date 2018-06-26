@@ -8,7 +8,7 @@ window.onload = function () {
      var collision;
      balls.push(ball);
      var player = new Player(500, 750, ctx, balls);
-     var none = new PowerUp(ctx, "none", player);
+     var none=new PowerUp( ctx, "none",player);
      var power = none;
      var powerUps = ["speed", "hacker", "time"];
      setInterval(function () {
@@ -43,12 +43,10 @@ window.onload = function () {
                }
           }
           //player
-          player.update(balls, bullets,counter);
+          player.update(balls);
           //ball
           for (j = 0; j < balls.length; j++) {
-               collision = balls[j].checkCollisions(bullets)
-               console.log(collision)
-               if (collision != false) {
+               if (collision = balls[j].checkCollisions(bullets)) {
                     if(balls[j].waiting==true){
                          if (collision[0].type == "veryLittle") {
                               balls.splice(j, 1);
@@ -75,16 +73,14 @@ window.onload = function () {
                }
                balls[j].update();
           }
-
+         if(power.update()){
+          player.powerUp = power.name;
+          power=none;
+         }
           if (counter > 3000) {
                power = new PowerUp(ctx, powerUps[Math.floor(Math.random() * 3)], player)
                counter = 0;
           }
-          if (power.update()) {
-               player.powerUp = power.name;
-               power = none;
-          }
-
           counter++;
      }, 1)
 

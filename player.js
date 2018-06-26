@@ -26,11 +26,6 @@ Player.prototype.draw = function () {
           70, -70
      );
      this.animateImg();
-
-     // this.ctx.save();
-     // this.ctx.translate(this.x, this.y);
-     // this.ctx.drawImage(this.img, 0, 0, 80, -80);
-     // this.ctx.restore();
 }
 
 Player.prototype.animateImg = function () {
@@ -72,10 +67,12 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 
 Player.prototype.checkCollisions = function (ball) {
      for (i = 0; i < ball.length; i++) {
-          if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
-               if (ball[i].y + ball[i].radius - 20 >= 700) {
-                    this.loose();
-                    this.vx = 0;
+          if (ball[i].hack==false) {
+               if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
+                    if (ball[i].y + ball[i].radius - 20 >= 700) {
+                         this.loose();
+                         this.vx = 0;
+                    }
                }
           }
      }
@@ -94,20 +91,27 @@ Player.prototype.spriteMove = function () {
      }
 }
 
-Player.prototype.checkPowerUp = function (ball, bullet) {
+Player.prototype.checkPowerUp = function (ball) {
      var that = this;
      switch (this.powerUp) {
           case "speed":
                setTimeout(function () {
-                    that.powerUp = 0;
+                    that.powerUp = 0
                }, 7000);
                break;
           case "hacker":
-               if (bullet.length > 0) {
-                    for (i = 0; i < bullet.length; i++) {
-                         bullet[i].hack = true;
+               if (ball.length > 0) {
+                    for (i = 0; i < ball.length; i++) {
+                         ball[i].hack = true;
                     }
                }
+               setTimeout(function () {
+                    console.log("idhfkjghasdghjf")
+                    for (i = 0; i < ball.length; i++) {
+                         ball[i].hack = false;
+                    }
+                    that.powerUp = 0
+               }, 4000);
                break;
           case "time":
                for (i = 0; i < ball.length; i++) {
@@ -116,7 +120,6 @@ Player.prototype.checkPowerUp = function (ball, bullet) {
                setTimeout(function () {
                     for (i = 0; i < ball.length; i++) {
                          ball[i].move();
-                         console.log(ball[i])
                     }
                     that.powerUp = 0;
                }, 4000)
@@ -129,10 +132,11 @@ Player.prototype.loose = function () {
      location.reload();
 }
 
-Player.prototype.update = function (ball, bullet) {
+Player.prototype.update = function (ball) {
      this.draw();
      this.move();
      this.spriteMove();
-     this.checkPowerUp(ball, bullet);
+     this.checkPowerUp(ball);
      this.checkCollisions(ball);
+     console.log(this.powerUp);
 }

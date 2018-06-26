@@ -7,7 +7,7 @@ function PowerUp(ctx, name, player) {
      this.ctx = ctx;
      this.name = name
 
-     this.x = this.width + Math.floor(Math.random() * 1000 - this.width);
+     this.x = this.width + Math.floor(Math.random() * 900 - this.width);
      this.img = new Image();
 
      if (this.name == "speed") {
@@ -19,11 +19,13 @@ function PowerUp(ctx, name, player) {
           this.img.src = ("images/time.png");
      } else {
           this.img = 0;
+          this.x=0
+          this.y=0
      }
 }
 
 PowerUp.prototype.checkCollisions = function () {
-     if (this.x < this.player.x + 80 && this.x + this.width > this.player.x) {
+     if (this.x < this.player.x + 70 && this.x + this.width > this.player.x && this.y>690) {
           return true;
      }
 }
