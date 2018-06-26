@@ -4,9 +4,10 @@
 }
 
 canvas{
-     //background-image: url("images/SNES - Super Buster Bros Super Pang - Backgrounds.png");
+     background-image: url("images/niceBack.png");
      border: 1px solid black;
-     //background-repeat: no-repeat;
-     //background-size: cover;
+     background-repeat: no-repeat;
+     background-size: cover;
+     object-fit: cover;
 }
 

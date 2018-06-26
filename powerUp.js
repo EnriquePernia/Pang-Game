@@ -1,6 +1,6 @@
-function PowerUp(ctx, name,player) {
+function PowerUp(ctx, name, player) {
      this.y = 200;
-     this.player=player;
+     this.player = player;
      this.width = 50;
      this.height = 50;
      this.vy = 1;
@@ -14,37 +14,36 @@ function PowerUp(ctx, name,player) {
           this.img.src = ("images/speed.png")
      } else if (this.name == "hacker") {
           this.img.src = ("images/hackerman.png");
-     
+
      } else if (this.name == "time") {
           this.img.src = ("images/time.png");
-       }
-       else{
-            this.img=0;
-       }
+     } else {
+          this.img = 0;
+     }
 }
 
-PowerUp.prototype.checkCollisions = function(){
-     if(this.x<this.player.x+80 && this.x+this.width>this.player.x){
+PowerUp.prototype.checkCollisions = function () {
+     if (this.x < this.player.x + 80 && this.x + this.width > this.player.x) {
           return true;
      }
 }
 
 PowerUp.prototype.draw = function () {
-     if(this.img==0){
-          this.ctx.lineTo(0,0,0,0);
+     if (this.img == 0) {
+          this.ctx.lineTo(0, 0, 0, 0);
           return false;
      }
-     this.ctx.drawImage(this.img, this.x, this.y,this.width,this.height);
+     this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 }
 
-PowerUp.prototype.move = function(){
-     if(this.y>=720){
-          this.vy=0;
+PowerUp.prototype.move = function () {
+     if (this.y >= 700) {
+          this.vy = 0;
      }
-     this.y+=this.vy;
+     this.y += this.vy;
 }
 
-PowerUp.prototype.update = function(){
+PowerUp.prototype.update = function () {
      this.draw();
      this.move();
      return this.checkCollisions();

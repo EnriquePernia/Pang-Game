@@ -1,75 +1,84 @@
 window.onload = function () {
      var canvas = document.getElementById("star-pang");
      var ctx = canvas.getContext('2d');
-     var ball = new Ball(ctx, 500, 400, 50);
+     var ball = new Ball(ctx, 500, 400, 140);
      var balls = [];
      var bullets = [];
-     var counter = 0; 
+     var counter = 0;
+     var collision;
      balls.push(ball);
-     var player = new Player(500, 780, ctx, balls);
+     var player = new Player(500, 750, ctx, balls);
      var none = new PowerUp(ctx, "none", player);
      var power = none;
-     var powerUps = [ "speed","hacker", "time"];
+     var powerUps = ["speed", "hacker", "time"];
      setInterval(function () {
-               ctx.clearRect(0, 0, 1000, 800);
+          ctx.clearRect(0, 0, 1000, 800);
 
-               document.onkeydown = function (e) {
-                    switch (e.keyCode) {
-                         case 37:
-                              player.vx = -1;
-                              break;
-                         case 39:
-                              player.vx = 1;
-          
-                              break;
-                         case 32:
+          document.onkeydown = function (e) {
+               switch (e.keyCode) {
+                    case 37:
+                         player.vx = -1;
+                         break;
+                    case 39:
+                         player.vx = 1;
+
+                         break;
+                    case 32:
+                         if (bullets.length < 3) {
                               player.shoot();
                               bullets.push(new Bullet(ctx, player));
+                         }
+               }
+          }
+          document.onkeyup = function (e) {
+               if (e.keyCode == 37 || e.keyCode == 39) {
+                    player.vx = 0;
+               }
+          }
+          //bullet
+          for (i = 0; i < bullets.length; i++) {
+               bullets[i].update(balls[0]);
+               if (bullets[i].seeIfLimit()) {
+                    bullets.splice(i, 1);
+               }
+          }
+          //player
+          player.update(balls, bullets,counter);
+          //ball
+          for (j = 0; j < balls.length; j++) {
+               collision = balls[j].checkCollisions(bullets)
+               console.log(collision)
+               if (collision != false) {
+                    if(balls[j].waiting==true){
+                         balls.splice(j, 1);
+                         balls.push(collision[0][0])
+                         balls.push(collision[0][1])
+                         balls[balls.length-1].stop();
+                         balls[balls.length-2].stop();
+                         bullets.splice(collision[1], 1)
+                    }
+                    else if (collision[0].type == "veryLittle") {
+                         balls.splice(j, 1);
+                         bullets.splice(collision[1], 1)
+                    } else {
+                         balls.splice(j, 1);
+                         balls.push(collision[0][0])
+                         balls.push(collision[0][1])
+                         bullets.splice(collision[1], 1)
                     }
                }
-               document.onkeyup = function (e) {
-                    if (e.keyCode == 37 || e.keyCode == 39) {
-                         player.vx = 0;
-                    }
-               }
-               //bullet
-               for(i=0;i<bullets.length;i++){
-                    bullets[i].update(balls[0]);
-                    if (bullets[i].seeIfLimit() ) {
-                         bullets.splice(i, 1);
-                    }
-               }
-               //player
-               player.update(balls,bullets);
-               //ball
-               for(ill=0;ill<balls.length;ill++){
-                     var coll = balls[ill].checkCollisions(bullets)
-                    if(coll!=false){
-                         console.log(coll[0][0].principio)
-                         balls.splice(ill,1);
-                         balls.push(coll[0][0])
-                         balls.push(coll[0][1])
-                         bullets.splice(coll[1],1)
-                         balls[ill].update();
-                        
-                    }    
-                    else{
-                         balls[ill].update();
-                    }
-               }
-               if(counter==10000){
-                    balls[0].generateNewBall(balls);
-               }
-               if (counter > 2000) {
-                    //power = new PowerUp( ctx,powerUps[Math.floor(Math.random() * 3)] ,player)
-                    power=new PowerUp( ctx,"hacker",player)
-                    counter = 0;
-               }
-               if(power.update()){
-                    player.powerUp=power.name;
-                    power=none;
-               }
-          
+               balls[j].update();
+          }
+
+          if (counter > 3000) {
+               power = new PowerUp(ctx, powerUps[Math.floor(Math.random() * 3)], player)
+               counter = 0;
+          }
+          if (power.update()) {
+               player.powerUp = power.name;
+               power = none;
+          }
+
           counter++;
      }, 1)
 

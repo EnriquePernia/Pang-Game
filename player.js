@@ -34,7 +34,6 @@ Player.prototype.draw = function () {
 }
 
 Player.prototype.animateImg = function() {
-     console.log(this.framesCounter)
      if (this.framesCounter % 40 === 0) {
        this.img.frameIndex += 1;
    
@@ -44,9 +43,9 @@ Player.prototype.animateImg = function() {
 
 
 Player.prototype.move = function (speed) {
-     if (this.x >= 920) {
+     if (this.x >= 905) {
           this.x -= 0.1;
-     } else if (this.x <= 0) {
+     } else if (this.x <= 15) {
           this.x += 0.1;
      } else {
           if (speed != undefined) {
@@ -73,8 +72,8 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 
 Player.prototype.checkCollisions = function (ball) {
      for (i = 0; i < ball.length; i++) {
-          if (this.x + 70 >= ball[i].x - ball[i].radius && this.x <= ball[i].x + ball[i].radius) {
-               if (ball[i].y + ball[i].radius >= 700) {
+          if (this.x + 70 >= ball[i].x +20 && this.x <= ball[i].x + ball[i].radius) {
+               if (ball[i].y + ball[i].radius-20 >= 700) {
                     this.loose();
                     this.vx = 0;
                }
@@ -92,12 +91,8 @@ Player.prototype.spriteMove = function(){
           this.img.frames=4;
      }
      else if(this.shoot()){
-          this.img.src="images/dispara.png"
-           this.img.frames=2;
-     }
-     else if(this.vx==0){
           this.img.src="images/espera.png"
-          this.img.frames=2;
+           this.img.frames=2;
      }
 }
 
@@ -108,7 +103,7 @@ Player.prototype.checkPowerUp = function (ball, bullet) {
                this.move();
                setTimeout(function () {
                     that.powerUp = 0;
-               }, 5000)
+               }, 5000);
                break;
           case "hacker":
                if (bullet.length>0) {
@@ -124,9 +119,10 @@ Player.prototype.checkPowerUp = function (ball, bullet) {
                setTimeout(function () {
                     for (i = 0; i < ball.length; i++) {
                          ball[i].move();
+                         console.log(ball[i])
                     }
                     that.powerUp = 0;
-               }, 2000)
+                }, 4000)
 
                break;
      }
