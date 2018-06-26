@@ -7,8 +7,8 @@ function Bullet(ctx, player) {
     this.y = 750;
     this.vY = 2;
     this.hack = false;
-    this.img=new Image();
-    this.img.src="images/pang2.gif";
+    this.img = new Image();
+    this.img.src = "images/pang2.gif";
 }
 
 Bullet.prototype.draw = function (ball) {
@@ -17,26 +17,33 @@ Bullet.prototype.draw = function (ball) {
     if (this.hack) {
         var l1 = this.y - ball.y;
         var l2 = ball.x - this.x
-         tan = Math.atan((l1 / l2));
-         console.log(tan);
+        tan = Math.atan((l1 / l2));
+        console.log(tan);
         if ((this.x - ball.x) > 0) {
             tan = tan;
         } else {
             tan = -tan;
         }
+        this.sY -= this.vY;
+        this.ctx.save();
+        this.ctx.translate(this.x, this.y);
+        this.ctx.drawImage(this.img, 0, 0, 20, this.sY);
+        this.ctx.rotate(tan);
+        this.ctx.restore();
+        this.seeIfLimit();
+    } else {
+        this.sY -= this.vY;
+        this.ctx.save();
+        this.ctx.translate(this.x, this.y);
+        this.ctx.drawImage(this.img, 0, 0, 20, this.sY);
+        this.ctx.rotate(tan);
+        this.ctx.restore();
+        this.seeIfLimit();
     }
-     this.sY -= this.vY;
-    this.ctx.save();
-     this.ctx.translate(this.x, this.y);
-     this.ctx.drawImage(this.img, 0, 0, 20,this.sY);
-    this.ctx.rotate(tan);
-    this.ctx.restore();
-    this.seeIfLimit();
 }
 
-
 Bullet.prototype.seeIfLimit = function () {
-    if (this.sY <= -740) {
+    if (this.sY <= -710) {
         return true;
     }
 }

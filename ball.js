@@ -54,21 +54,10 @@ Ball.prototype.remove = function () {
 }
 
 Ball.prototype.stop = function(){
-    this.auxX=this.sX;
-    this.auxY=this.sY;
-     this.sX=0;
-     this.sY=0;
-     this.gravity=0;
-     this.jumpy=0;
      this.waiting=true;
 }
 
 Ball.prototype.move = function(){
-    console.log(this.sX)
-     this.sX = this.auxX;
-     this.sY = this.auxY
-     this.gravity = 0.01;
-     this.jumpy=-2.1;
      this.waiting=false;
 }
 
@@ -141,6 +130,7 @@ Ball.prototype.checkCollisions = function(bullets){
 Ball.prototype.update = function () {
      //this.ctx.clearRect(0,0,1000,800);
      this.draw();
+     if(!this.waiting){
      if (this.y >=760-this.radius) {
           this.bounce();
      }
@@ -155,4 +145,5 @@ Ball.prototype.update = function () {
       if (this.principio == true) {
              this.principio = false;
    }
+}
 }
