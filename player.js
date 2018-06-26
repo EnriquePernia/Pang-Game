@@ -1,5 +1,4 @@
-function Player(x, y, ctx, ball) {
-     this.ball = ball;
+function Player(x, y, ctx) {
      this.x = x;
      this.y = y;
      this.sX = 0;
@@ -7,8 +6,6 @@ function Player(x, y, ctx, ball) {
      this.ctx = ctx;
      this.img = new Image();
      this.img.src = "images/Estrella.png";
-     this.setListeners();
-     this.bullets = [];
      this.powerUp;
 }
 
@@ -34,36 +31,12 @@ Player.prototype.move = function (speed) {
      }
 }
 
-Player.prototype.setListeners = function () {
-     var that = this;
-     document.onkeydown = function (e) {
-          switch (e.keyCode) {
-               case 37:
-                    that.vx = -1;
-
-                    break;
-               case 39:
-                    that.vx = 1;
-
-                    break;
-               case 32:
-                    that.shoot();
-          }
-     }
-     document.onkeyup = function (e) {
-          if (e.keyCode == 37 || e.keyCode == 39) {
-               that.vx = 0;
-          }
-     }
-}
 
 // Player.prototype.dead = function(){
 //      this.
 // }
 Player.prototype.shoot = function () {
      this.vx = 0;
-     var bullet = new Bullet(this.ctx, this);
-     this.bullets.push(bullet);
 }
 
 Player.prototype.delete = function (ballPos, bulletPos) {
@@ -71,44 +44,19 @@ Player.prototype.delete = function (ballPos, bulletPos) {
      this.bullets.splice(bulletPos, 1);
 }
 
-Player.prototype.checkCollisions = function () {
-     if (this.bullets.length > 0) {
-          for (i = 0; i < this.bullets.length; i++) {
-               for (j = 0; j < this.ball.length; j++) {
-                    if (this.bullets[i].x + 10 >= this.ball[j].x - this.ball[j].radius && this.bullets[i].x <= this.ball[j].x + this.ball[j].radius) {
-                         if (this.ball[j].y >= 720 + this.bullets[i].sY) {
-                              if (this.ball[j].type == "big") {
-                                   var p = this.ball[j].popBig();
-                                   this.ball.push(p[0]);
-                                   this.ball.push(p[1]);
-                              } else if (this.ball[j].type == "medium") {
-                                   var p = this.ball[j].popMedium();
-                                   this.ball.push(p[0]);
-                                   this.ball.push(p[1]);
-                              } else if (this.ball[j].type == "little") {
-                                   var p = this.ball[j].popLittle();
-                                   this.ball.push(p[0]);
-                                   this.ball.push(p[1]);
-                              }
-                              this.delete(j, i);
-                         }
-                    }
-               }
-          }
-     }
-
-     for (i = 0; i < this.ball.length; i++) {
-          if (this.x + 70 >= this.ball[i].x - this.ball[i].radius && this.x <= this.ball[i].x + this.ball[i].radius) {
-               if (this.ball[i].y + this.ball[i].radius >= 700) {
+Player.prototype.checkCollisions = function (ball) {
+     for (i = 0; i < ball.length; i++) {
+          if (this.x + 70 >= ball[i].x - ball[i].radius && this.x <= ball[i].x + ball[i].radius) {
+               if (ball[i].y + ball[i].radius >= 700) {
                     this.loose();
-                    this.ball.splice(i, 1);
                     this.vx = 0;
                }
           }
      }
 }
 
-Player.prototype.checkPowerUp = function () {
+Player.prototype.checkPowerUp = function (ball, bullet) {
+     console.log(this.powerUp)
      var that = this;
      switch (this.powerUp) {
           case "speed":
@@ -117,62 +65,54 @@ Player.prototype.checkPowerUp = function () {
                     that.powerUp = 0;
                }, 5000)
                break;
-               // case "hacker":
-               // var min=1000
-               // var index;
-               //      for (i = 0; i < this.ball.length; i++) {
-               //           if((this.ball[i].x+this.ball[i].y)-(this.x+this.y)<min){
-               //                min=(this.ball[i].x+this.ball[i].y)-(this.x+this.y);
-               //                index=i;
-               //           }
-               //      }
-               //      for(i=0;i<20000;i++){
-               //           for(j=0;j<this.bullets.length;j++){
-               //                this.bullets[j].sX=this.ball[index].x;
-               //                this.bullets[j].sY=this.ball[index].y;
-               //           }
-               //      }
-               //      break;
-               case "time":
-               var that=this;
-                    for (i = 0; i < this.ball.length; i++) {
-                         this.ball[i].stop();
+          case "hacker":
+               var min = 10000;
+               var index;
+               var l1;
+               var l2;
+               var tan;
+               for (i = 0; i < ball.length; i++) {
+                    if (ball[i].x - that.x + ball[i].y - this.y < min) {
+                         min = ball[i].x - that.x + ball[i].y - this.y;
+                         index = i;
                     }
-                    setTimeout(function(){
-                         for (i = 0; i < that.ball.length; i++) {
-                         that.ball[i].move();
-                         }
-                         that.powerUp=0;
-                    },2000)
+               }
+               for (i = 0; i < bullet.length; i++) {
+                    l1 = bullet[i].y - ball[index];
+                    l2 = ball[index].x - bullet[i].x
+                    tan = Math.atan(l1 / l2);
 
-                    break;
+                    if ((bullet.x - ball[index].x) > 0) {
+                         bullet[i].hack = tan;
+                    }
+                    else{
+                         bullet[i].hack = -tan;
+                    }
+               }
+
+               break;
+          case "time":
+               for (i = 0; i < ball.length; i++) {
+                    ball[i].stop();
+               }
+               setTimeout(function () {
+                    for (i = 0; i < ball.length; i++) {
+                         ball[i].move();
+                    }
+                    that.powerUp = 0;
+               }, 2000)
+
+               break;
      }
 }
 
 Player.prototype.loose = function () {
-     alert("Perdiste")
      location.reload();
 }
 
-Player.prototype.update = function () {
+Player.prototype.update = function (ball, bullet) {
      this.draw();
      this.move();
-     for (i = 0; i < this.bullets.length; i++) {
-          this.bullets[i].update();
-          if (this.bullets[i].seeIfLimit() == true) {
-               this.bullets.splice(i, 1);
-          }
-
-     }
-
-     for (i = 0; i < this.ball.length; i++) {
-          if (this.ball[i].principio == true) {
-               this.ball[i].update();
-               this.ball[i].principio = false;
-          } else {
-               this.ball[i].update();
-          }
-     }
-     this.checkPowerUp();
-     this.checkCollisions();
+     this.checkPowerUp(ball, bullet);
+     this.checkCollisions(ball);
 }

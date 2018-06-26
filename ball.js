@@ -102,6 +102,30 @@ Ball.prototype.popLittle = function(){
      return pop
 }
 
+Ball.prototype.checkCollisions = function(bullets){
+    if (bullets!=undefined && bullets.length > 0) {
+        for (i = 0; i < bullets.length; i++) {
+                  if (bullets[i].x + 10 >= this.x - this.radius && bullets[i].x <= this.x + this.radius) {
+                       if (this.y >= 720 + bullets[i].sY) {
+                            if (this.type == "big") {
+                                 var p = this.popBig();
+                                return [p,i]
+                            } else if (this.type == "medium") {
+                                 var p = this.popMedium();
+                                 return [p,i]
+                            } else if (this.type == "little") {
+                                 var p = this.popLittle();
+                                return [p,i]
+                            }
+                            return [this,i];
+                            
+                       }
+                  }
+             }
+        }
+        return false;
+   }
+
 
 Ball.prototype.update = function () {
      //this.ctx.clearRect(0,0,1000,800);
@@ -114,4 +138,7 @@ Ball.prototype.update = function () {
      }
      this.speedY();
      this.speedX();
+      if (this.principio == true) {
+             this.principio = false;
+   }
 }
