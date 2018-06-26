@@ -67,7 +67,7 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 
 Player.prototype.checkCollisions = function (ball) {
      for (i = 0; i < ball.length; i++) {
-          if (ball[i].hack==false) {
+          if (ball[i].hack == false) {
                if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
                     if (ball[i].y + ball[i].radius - 20 >= 700) {
                          this.loose();
