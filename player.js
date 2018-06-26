@@ -5,16 +5,42 @@ function Player(x, y, ctx) {
      this.vx = 0;
      this.ctx = ctx;
      this.img = new Image();
-     this.img.src = "images/Estrella.png";
+     this.img.src = "images/espera.png";
+     this.img.frames=2;
+     this.img.frameIndex = 0;
      this.powerUp;
+     this.framesCounter=0;
 }
 
 Player.prototype.draw = function () {
-     this.ctx.save();
-     this.ctx.translate(this.x, this.y);
-     this.ctx.drawImage(this.img, 0, 0, 80, -80);
-     this.ctx.restore();
+     this.framesCounter++;
+     this.ctx.drawImage(
+          this.img,
+          this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
+          0,
+          Math.floor(this.img.width / this.img.frames),
+          40,
+          this.x,
+          this.y,
+          70,
+          -70
+     );
+         this.animateImg();
+     
+     // this.ctx.save();
+     // this.ctx.translate(this.x, this.y);
+     // this.ctx.drawImage(this.img, 0, 0, 80, -80);
+     // this.ctx.restore();
 }
+
+Player.prototype.animateImg = function() {
+     console.log(this.framesCounter)
+     if (this.framesCounter % 40 === 0) {
+       this.img.frameIndex += 1;
+   
+       if (this.img.frameIndex > 1) this.img.frameIndex = 0;
+     }
+   };
 
 
 Player.prototype.move = function (speed) {
@@ -37,6 +63,7 @@ Player.prototype.move = function (speed) {
 // }
 Player.prototype.shoot = function () {
      this.vx = 0;
+     return true;
 }
 
 Player.prototype.delete = function (ballPos, bulletPos) {
@@ -55,8 +82,26 @@ Player.prototype.checkCollisions = function (ball) {
      }
 }
 
+Player.prototype.spriteMove = function(){
+     if(this.vx==-1){
+          this.img.src="images/left.png"
+          this.img.frames=4;
+     }
+     else if(this.vx==1){
+          this.img.src="images/rigth.png"
+          this.img.frames=4;
+     }
+     else if(this.shoot()){
+          this.img.src="images/dispara.png"
+           this.img.frames=2;
+     }
+     else if(this.vx==0){
+          this.img.src="images/espera.png"
+          this.img.frames=2;
+     }
+}
+
 Player.prototype.checkPowerUp = function (ball, bullet) {
-     console.log(this.powerUp)
      var that = this;
      switch (this.powerUp) {
           case "speed":
@@ -66,30 +111,11 @@ Player.prototype.checkPowerUp = function (ball, bullet) {
                }, 5000)
                break;
           case "hacker":
-               var min = 10000;
-               var index;
-               var l1;
-               var l2;
-               var tan;
-               for (i = 0; i < ball.length; i++) {
-                    if (ball[i].x - that.x + ball[i].y - this.y < min) {
-                         min = ball[i].x - that.x + ball[i].y - this.y;
-                         index = i;
+               if (bullet.length>0) {
+                    for (i = 0; i < bullet.length; i++) {
+                         bullet[i].hack = true;
                     }
                }
-               for (i = 0; i < bullet.length; i++) {
-                    l1 = bullet[i].y - ball[index];
-                    l2 = ball[index].x - bullet[i].x
-                    tan = Math.atan(l1 / l2);
-
-                    if ((bullet.x - ball[index].x) > 0) {
-                         bullet[i].hack = tan;
-                    }
-                    else{
-                         bullet[i].hack = -tan;
-                    }
-               }
-
                break;
           case "time":
                for (i = 0; i < ball.length; i++) {
@@ -113,6 +139,7 @@ Player.prototype.loose = function () {
 Player.prototype.update = function (ball, bullet) {
      this.draw();
      this.move();
+     this.spriteMove();
      this.checkPowerUp(ball, bullet);
      this.checkCollisions(ball);
 }

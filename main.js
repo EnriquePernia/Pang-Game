@@ -34,7 +34,7 @@ window.onload = function () {
                }
                //bullet
                for(i=0;i<bullets.length;i++){
-                    bullets[i].update();
+                    bullets[i].update(balls[0]);
                     if (bullets[i].seeIfLimit() ) {
                          bullets.splice(i, 1);
                     }
