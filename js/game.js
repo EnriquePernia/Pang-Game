@@ -1,11 +1,10 @@
  function Game(ctx) {
-       this.ball = new Ball(ctx, 500, 400, 140,"big");
        this.ctx = ctx;
        this.balls = [];
        this.bullets = [];
        this.counter = 0;
        this.collision;
-       this.balls.push(this.ball);
+      //this.balls.push(new Ball(this.ctx,600,300,140,"big"))
        this.player = new Player(500, 750, this.ctx, this.balls);
        this.none = new PowerUp(this.ctx, "none", this.player);
        this.power = this.none;
@@ -14,9 +13,10 @@
        this.startCont = false;
        this.xAux;
        this.yAux;
-       this.platform = new Platform(this.ctx, 500, 500, 100, 50);
+       this.platformsArray = [];
        this.platReturn;
-       this.keyboard=new Keyboard();
+       this.level=0;
+       this.keyboard = new Keyboard();
  }
  Game.prototype.setListeners = function () {
        this.ctx.clearRect(0, 0, 1000, 800);
@@ -24,21 +24,23 @@
        document.onkeydown = function (e) {
              switch (e.keyCode) {
                    case this.keyboard.keyLeft:
-                       this.player.moveLeft();
+                         this.player.moveLeft();
                          break;
-                   case  this.keyboard.keyRight:
-                   this.player.moveRight();
+                   case this.keyboard.keyRight:
+                         this.player.moveRight();
                          break;
-                   case  this.keyboard.spaceBar:
+                   case this.keyboard.spaceBar:
                          if (this.bullets.length < 3) {
                                this.player.shoot();
                                this.bullets.push(new Bullet(this.ctx, this.player));
                          }
              }
        }.bind(this)
-       if (this.platform != 0) {
-             if (this.platform.breakPlatform()) {
-                   this.platform = 0;
+       if (this.platformsArray.length > 0) {
+             for (let i = 0; i < this.platformsArray.length; i++) {
+                   if (this.platformsArray[i].breakPlatform()) {
+                         this.platformsArray.splice(i, 1);
+                   }
              }
        }
        document.onkeyup = function (e) {
@@ -99,7 +101,7 @@
                          } else {
                                this.player.drawPop(this.xAux, this.yAux);
                          }
-                    
+
                    } else {
                          this.popCont = 0;
                          this.startCont = false;
@@ -121,14 +123,37 @@
              this.counter++;
        }
  }
+
  Game.prototype.platforms = function () {
-       if (this.platform != 0) {
-             if (this.platform.update(this.balls, this.bullets) !== false) {
-                   this.bullets.splice(this.platReturn, 1);
+       for (let i = 0; i < this.platformsArray.length; i++) {
+             if (this.platformsArray.length> 0) {
+                   console.log(this.platformsArray)
+                   if (this.platformsArray[i].update(this.balls, this.bullets,this.player) !== false) {
+                         this.bullets.splice(this.platReturn, 1);
+                   }
              }
        }
  }
 
- Game.prototype.makeMap = function(){
-       
+ Game.prototype.makeMap = function (num) {
+       if(num==0){
+            this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"));
+       }
+      if(num==1){
+       this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+      this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"),new Ball(this.ctx,120,100,115,"medium"))
+      }
+     if(num==2){
+            for(let i=0;i<this.platformsArray.length;i++){
+                  this.platformsArray[i].crazy=true;
+            }
+            // this.balls.push(new Ball(this.ctx,600,500,"big"))//,new Ball(this.ctx,100,500,"medium"))
+      }
+ }
+
+ Game.prototype.selectLevel = function(){
+       if (this.balls.length==0){
+            this.level++;
+            return this.makeMap(this.level);
+       }    
  }

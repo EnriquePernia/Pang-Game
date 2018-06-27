@@ -9,7 +9,7 @@ function Ball(ctx, x, y, radius,type) {
     this.gravity = 0.05;
     this.bouncePower = -3.2;
     this.principio = true;
-    this.jumpy = -1.9;
+    this.jumpy = -1.7;
     this.img = new Image();
     this.img.src = "images/redBall.png"
     this.img2 = new Image();
@@ -37,7 +37,7 @@ Ball.prototype.speedY = function () {
     if (this.principio == true) {
         this.sY += this.gravity + this.jumpy;
     } else if (this.waiting == false) {
-        this.sY += this.gravity + (800 - this.y) * 0.00004;
+        this.sY += this.gravity + (800 - this.y) * 0.00007;
     }
 
     this.y += 4.2*this.sY;
@@ -85,8 +85,8 @@ Ball.prototype.popBig = function () {
 
 Ball.prototype.popMedium = function () {
     var pop = [];
-    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 30,"little"));
-    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 30,"little"));
+    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 39,"little"));
+    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 39,"little"));
     pop[0].sX = this.sX;
     pop[1].sX = -this.sX;
     pop[0].gravity = this.gravity+0.01;
@@ -96,8 +96,8 @@ Ball.prototype.popMedium = function () {
 
 Ball.prototype.popLittle = function () {
     var pop = [];
-    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 45,"veryLittle"));
-    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 45,"veryLittle"));
+    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 49,"veryLittle"));
+    pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 49,"veryLittle"));
     pop[0].sX = this.sX;
     pop[1].sX = -this.sX;
     pop[0].gravity = this.gravity+0.01;

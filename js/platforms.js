@@ -9,6 +9,7 @@ function Platform(ctx, x, y, x2, y2, type) {
     this.img.src = "images/fragilePlatform.png"
     this.counter = 0;
     this.info = [];
+    this.crazy=false;
     // this.img2 = new Image();
     // this. img2.src="images/fragilePlatform.png"
 }
@@ -19,19 +20,18 @@ Platform.prototype.draw = function () {
     this.ctx.restore();
 }
 
-Platform.prototype.checkCollision = function (ball, bullet) {
+Platform.prototype.checkCollision = function (ball, bullet, player) {
     for (i = 0; i < ball.length; i++) {
         if (ball[i].type == "medium" || ball[i].type == "little" || ball[i].type == "big") {
-            if (ball[i].x + ball[i].radius <= this.x && ball[i].x + ball[i].radius > this.x + this.x2 && ball[i].y + ball[i].radius > this.y + this.y2-20 && ball[i].y > this.y-10) {//izq
+            if (ball[i].x + ball[i].radius <= this.x && ball[i].x + ball[i].radius > this.x + this.x2 && ball[i].y + ball[i].radius > this.y + this.y2 - 20 && ball[i].y > this.y - 10) { //izq
                 ball[i].changeX();
-            } else if (ball[i].x <= this.x+this.x2 && ball[i].x + ball[i].radius >= this.x && ball[i].y + ball[i].radius > this.y + this.y2 && ball[i].y < this.y) {//dcha
+            } else if (ball[i].x <= this.x + this.x2 && ball[i].x + ball[i].radius >= this.x && ball[i].y + ball[i].radius > this.y + this.y2 && ball[i].y < this.y) { //dcha
                 ball[i].changeX();
             }
-        }
-        else{
-              if (ball[i].x <= this.x && ball[i].x + ball[i].radius >=this.x + this.x2 && ball[i].y + ball[i].radius < this.y + this.y2 && ball[i].y > this.y) {
+        } else {
+            if (ball[i].x <= this.x && ball[i].x + ball[i].radius >= this.x + this.x2 && ball[i].y + ball[i].radius < this.y + this.y2 && ball[i].y > this.y) {
                 ball[i].changeX();
-            } else if (ball[i].x < this.x && ball[i].x + ball[i].radius >= this.x && ball[i].y + ball[i].radius < this.y + this.y2 && ball[i].y >this.y) {
+            } else if (ball[i].x < this.x && ball[i].x + ball[i].radius >= this.x && ball[i].y + ball[i].radius < this.y + this.y2 && ball[i].y > this.y) {
                 ball[i].changeX();
             }
         }
@@ -53,6 +53,15 @@ Platform.prototype.checkCollision = function (ball, bullet) {
             }
         }
     }
+    if (this.y >660) {
+        if (this.x >= player.x + 40) { //Player
+            player.stop();
+            player.x -= 0.5;
+        } else if (this.x + this.x2 >= player.x) {
+            player.stop();
+            player.x += 0.5;
+        } //Bullets
+    }
     if (bullet != undefined && bullet.length > 0) {
         for (i = 0; i < bullet.length; i++) {
             if (bullet[i].x + 10 >= this.x && bullet[i].x <= this.x + this.x2) {
@@ -66,6 +75,14 @@ Platform.prototype.checkCollision = function (ball, bullet) {
     return false;
 }
 
+Platform.prototype.getCrazy = function(){
+    if (this.x <= player.x+40) {
+        this.x+= 0.6;
+   } else if (this.x +this.x2<= player.x) {
+        this.x += 0.6;
+   }
+}
+
 Platform.prototype.breakPlatform = function () {
     if (this.counter == 3) {
         return true
@@ -75,7 +92,10 @@ Platform.prototype.breakPlatform = function () {
 
 
 
-Platform.prototype.update = function (ball, bullet) {
+Platform.prototype.update = function (ball, bullet, player) {
     this.draw();
-    return this.checkCollision(ball, bullet);;
+    if(this.crazy==true){
+    this.getCrazy();
+    }
+    return this.checkCollision(ball, bullet, player);
 }

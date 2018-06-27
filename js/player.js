@@ -38,15 +38,15 @@ Player.prototype.animateImg = function () {
      }
 };
 
-Player.prototype.moveLeft = function(){
-   this.vx = -4.5;
+Player.prototype.moveLeft = function () {
+     this.vx = -4.5;
 }
 
-Player.prototype.moveRight = function(){
+Player.prototype.moveRight = function () {
      this.vx = 4.5;
 }
 
-Player.prototype.stop = function(){
+Player.prototype.stop = function () {
      this.vx = 0;
 }
 
@@ -81,16 +81,15 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 Player.prototype.checkCollisions = function (ball) {
      for (i = 0; i < ball.length; i++) {
           if (ball[i].hack == false) {
-               if (ball[i].type == "medium" || ball[i].type == "little" || ball[i].type == "veryLittle")  {
+               if (ball[i].type == "medium" || ball[i].type == "little" || ball[i].type == "veryLittle") {
                     if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
                          if (ball[i].y + ball[i].radius - 20 >= 700) {
                               this.loose();
                               this.vx = 0;
                          }
                     }
-               }
-               else {
-                    if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius-25) {
+               } else {
+                    if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius - 25) {
                          if (ball[i].y + ball[i].radius - 20 >= 700) {
                               this.loose();
                               this.vx = 0;
