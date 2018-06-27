@@ -54,7 +54,7 @@ Ball.prototype.bounce = function () {
     this.sY = this.bouncePower;
 }
 Ball.prototype.bounceBack = function () {
-    this.sY = -this.bouncePower;
+    this.sY = -this.bouncePower+0.3;
 }
 
 Ball.prototype.remove = function () {
