@@ -11,6 +11,8 @@ function Player(x, y, ctx) {
      this.powerUp;
      this.framesCounter = 0;
      this.speed = false;
+     this.img2 = new Image();
+     this.img2.src = "images/pop.png"
 }
 
 Player.prototype.draw = function () {
@@ -68,11 +70,22 @@ Player.prototype.delete = function (ballPos, bulletPos) {
 Player.prototype.checkCollisions = function (ball) {
      for (i = 0; i < ball.length; i++) {
           if (ball[i].hack == false) {
-               if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
-                    if (ball[i].y + ball[i].radius - 20 >= 700) {
-                         this.loose();
-                         this.vx = 0;
+               if (ball[i].type == "medium" || ball[i].type == "little" || ball[i].type == "veryLittle")  {
+                    if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
+                         if (ball[i].y + ball[i].radius - 20 >= 700) {
+                              this.loose();
+                              this.vx = 0;
+                         }
                     }
+               }
+               else {
+                    if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius-25) {
+                         if (ball[i].y + ball[i].radius - 20 >= 700) {
+                              this.loose();
+                              this.vx = 0;
+                         }
+                    }
+
                }
           }
      }
@@ -106,7 +119,6 @@ Player.prototype.checkPowerUp = function (ball) {
                     }
                }
                setTimeout(function () {
-                    console.log("idhfkjghasdghjf")
                     for (i = 0; i < ball.length; i++) {
                          ball[i].hack = false;
                     }
@@ -132,11 +144,18 @@ Player.prototype.loose = function () {
      location.reload();
 }
 
+Player.prototype.drawPop = function (x, y) {
+     this.ctx.save();
+     this.ctx.translate(x, y);
+     this.ctx.drawImage(this.img2, 0, 0, 90, 90);
+     this.ctx.restore();
+}
+
+
 Player.prototype.update = function (ball) {
      this.draw();
      this.move();
      this.spriteMove();
      this.checkPowerUp(ball);
      this.checkCollisions(ball);
-     console.log(this.powerUp);
 }

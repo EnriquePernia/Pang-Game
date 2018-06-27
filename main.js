@@ -8,9 +8,14 @@ window.onload = function () {
      var collision;
      balls.push(ball);
      var player = new Player(500, 750, ctx, balls);
-     var none=new PowerUp( ctx, "none",player);
+     var none = new PowerUp(ctx, "none", player);
      var power = none;
      var powerUps = ["speed", "hacker", "time"];
+     var popCont = 0;
+     var startCont = false;
+     var xAux;
+     var yAux;
+     var platform= new Platform(ctx, 500, 500, 100, 50);
      setInterval(function () {
           ctx.clearRect(0, 0, 1000, 800);
 
@@ -43,25 +48,30 @@ window.onload = function () {
                }
           }
           //player
-          player.update(balls);
+          player.update(balls, bullets, counter);
+          if (startCont == true) {
+               popCont++;
+          }
           //ball
           for (j = 0; j < balls.length; j++) {
                if (collision = balls[j].checkCollisions(bullets)) {
-                    if(balls[j].waiting==true){
+                    startCont = true;
+                    xAux = balls[j].x;
+                    yAux = balls[j].y;
+
+                    if (balls[j].waiting == true) {
                          if (collision[0].type == "veryLittle") {
                               balls.splice(j, 1);
                               bullets.splice(collision[1], 1)
+                         } else {
+                              balls.splice(j, 1);
+                              balls.push(collision[0][0])
+                              balls.push(collision[0][1])
+                              balls[balls.length - 1].stop();
+                              balls[balls.length - 2].stop();
+                              bullets.splice(collision[1], 1)
                          }
-                         else{
-                         balls.splice(j, 1);
-                         balls.push(collision[0][0])
-                         balls.push(collision[0][1])
-                         balls[balls.length-1].stop();
-                         balls[balls.length-2].stop();
-                         bullets.splice(collision[1], 1)
-                         }
-                    }
-                    else if (collision[0].type == "veryLittle") {
+                    } else if (collision[0].type == "veryLittle") {
                          balls.splice(j, 1);
                          bullets.splice(collision[1], 1)
                     } else {
@@ -71,17 +81,34 @@ window.onload = function () {
                          bullets.splice(collision[1], 1)
                     }
                }
+               if (popCont < 50 && startCont == true) {
+                    if (balls.length == 0) {
+                         for (i = 0; i < 1000;i++) {
+                              player.drawPop(xAux, yAux);
+                         }
+                    }
+                    else{
+                         player.drawPop(xAux, yAux);
+                    }
+               } else {
+                    popCont = 0;
+                    startCont = false;
+               }
                balls[j].update();
           }
-         if(power.update()){
-          player.powerUp = power.name;
-          power=none;
-         }
+          if (power.update()) {
+               player.powerUp = power.name;
+               power = none;
+          }
           if (counter > 3000) {
                power = new PowerUp(ctx, powerUps[Math.floor(Math.random() * 3)], player)
                counter = 0;
           }
           counter++;
+          if(platform.update(balls,bullets)!==false){
+               console.log(platform.update(balls,bullets))
+               bullets.splice(platform.update(balls,bullets),1);
+          }
      }, 1)
 
 }

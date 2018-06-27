@@ -12,21 +12,24 @@ function Ball(ctx, x, y, radius) {
     this.jumpy = -2.1;
     this.img = new Image();
     this.img.src = "images/redBall.png"
+    this.img2 = new Image();
+    this.img2.src = "images/invincible.png"
     this.auxX;
     this.auxY;
     this.waiting = false;
     this.hack = false;
+    this.pop=false;
 }
 
 Ball.prototype.draw = function () {
-    if (this.hack) {
-        this.img.src = "images/Estrella.png"
-    } else {
-        this.img.src = "images/redBall.png"
-    }
     this.ctx.save();
     this.ctx.translate(this.x, this.y);
-    this.ctx.drawImage(this.img, 0, 0, this.radius, this.radius);
+    if (this.hack) {
+        this.ctx.drawImage(this.img2, 0, 0, this.radius+30, this.radius);
+         } 
+         else {
+         this.ctx.drawImage(this.img, 0, 0, this.radius, this.radius);
+    }
     this.ctx.restore();
 }
 Ball.prototype.speedY = function () {
@@ -49,6 +52,9 @@ Ball.prototype.speedX = function () {
 
 Ball.prototype.bounce = function () {
     this.sY = this.bouncePower;
+}
+Ball.prototype.bounceBack = function () {
+    this.sY = -this.bouncePower;
 }
 
 Ball.prototype.remove = function () {
