@@ -1,4 +1,4 @@
-function Player(x, y, ctx) {
+function Player(x, y, ctx,number) {
      this.x = x;
      this.y = y;
      this.sX = 0;

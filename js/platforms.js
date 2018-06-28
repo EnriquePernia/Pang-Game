@@ -1,15 +1,15 @@
-function Platform(ctx, x, y, x2, y2, type) {
+function Platform(ctx, x, y, x2, y2, crazy) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
     this.x2 = x2
     this.y2 = y2
-    this.type = type;
+    this.sX = 0.6;
     this.img = new Image();
     this.img.src = "images/fragilePlatform.png"
     this.counter = 0;
     this.info = [];
-    this.crazy=false;
+    this.crazy = crazy;
     // this.img2 = new Image();
     // this. img2.src="images/fragilePlatform.png"
 }
@@ -53,7 +53,7 @@ Platform.prototype.checkCollision = function (ball, bullet, player) {
             }
         }
     }
-    if (this.y >660) {
+    if (this.y > 660) {
         if (this.x >= player.x + 40) { //Player
             player.stop();
             player.x -= 0.5;
@@ -75,13 +75,18 @@ Platform.prototype.checkCollision = function (ball, bullet, player) {
     return false;
 }
 
-Platform.prototype.getCrazy = function(){
-    if (this.x <= player.x+40) {
-        this.x+= 0.6;
-   } else if (this.x +this.x2<= player.x) {
-        this.x += 0.6;
-   }
+Platform.prototype.getCrazy = function () {
+    this.changeX();
 }
+
+Platform.prototype.changeX = function () {
+    this.sX*=-1;
+}
+
+Platform.prototype.move = function () {
+    this.x += this.sX;
+}
+
 
 Platform.prototype.breakPlatform = function () {
     if (this.counter == 3) {
@@ -94,8 +99,11 @@ Platform.prototype.breakPlatform = function () {
 
 Platform.prototype.update = function (ball, bullet, player) {
     this.draw();
-    if(this.crazy==true){
-    this.getCrazy();
+    if (this.crazy = true) {
+        this.move();
+        if (this.x < 100 || this.x + this.x2 >700) {
+        this.getCrazy();
     }
+}
     return this.checkCollision(ball, bullet, player);
 }

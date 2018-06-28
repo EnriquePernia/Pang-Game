@@ -4,7 +4,6 @@
        this.bullets = [];
        this.counter = 0;
        this.collision;
-      //this.balls.push(new Ball(this.ctx,600,300,140,"big"))
        this.player = new Player(500, 750, this.ctx, this.balls);
        this.none = new PowerUp(this.ctx, "none", this.player);
        this.power = this.none;
@@ -125,9 +124,9 @@
  }
 
  Game.prototype.platforms = function () {
+      console.log(this.platformsArray)
        for (let i = 0; i < this.platformsArray.length; i++) {
              if (this.platformsArray.length> 0) {
-                   console.log(this.platformsArray)
                    if (this.platformsArray[i].update(this.balls, this.bullets,this.player) !== false) {
                          this.bullets.splice(this.platReturn, 1);
                    }
@@ -136,18 +135,16 @@
  }
 
  Game.prototype.makeMap = function (num) {
+      this.platformsArray=[];
        if(num==0){
             this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"));
        }
       if(num==1){
-       this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+       this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40,false), new Platform(this.ctx, 250, 580, 150, 40,false), new Platform(this.ctx, 460, 480, 150, 40,false), new Platform(this.ctx, 680, 380, 150, 40,false));
       this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"),new Ball(this.ctx,120,100,115,"medium"))
       }
-     if(num==2){
-            for(let i=0;i<this.platformsArray.length;i++){
-                  this.platformsArray[i].crazy=true;
-            }
-            // this.balls.push(new Ball(this.ctx,600,500,"big"))//,new Ball(this.ctx,100,500,"medium"))
+      else if(num==2){
+            this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40,true), new Platform(this.ctx, 250, 580, 150, 40,true), new Platform(this.ctx, 460, 480, 150, 40,true), new Platform(this.ctx, 680, 380, 150, 40,true));
       }
  }
 
