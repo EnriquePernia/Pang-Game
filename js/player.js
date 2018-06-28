@@ -13,6 +13,7 @@ function Player(x, y, ctx,number) {
      this.speed = false;
      this.img2 = new Image();
      this.img2.src = "images/pop.png"
+     this.loose=false;
 }
 
 Player.prototype.draw = function () {
@@ -84,14 +85,14 @@ Player.prototype.checkCollisions = function (ball) {
                if (ball[i].type == "medium" || ball[i].type == "little" || ball[i].type == "veryLittle") {
                     if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius) {
                          if (ball[i].y + ball[i].radius - 20 >= 700) {
-                              this.loose();
+                              this.loose=true;
                               this.vx = 0;
                          }
                     }
                } else {
                     if (this.x + 70 >= ball[i].x + 20 && this.x <= ball[i].x + ball[i].radius - 25) {
                          if (ball[i].y + ball[i].radius - 20 >= 700) {
-                              this.loose();
+                              this.loose=true;
                               this.vx = 0;
                          }
                     }
@@ -148,10 +149,6 @@ Player.prototype.checkPowerUp = function (ball) {
 
                break;
      }
-}
-
-Player.prototype.loose = function () {
-     location.reload();
 }
 
 Player.prototype.drawPop = function (x, y) {

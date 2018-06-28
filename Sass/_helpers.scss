@@ -14,3 +14,14 @@ canvas{
 body{
      background-color: black;
 }
+
+#pass{
+     display:flex;
+     justify-content: center;
+    align-items:flex-end;
+     background-color: black;
+     width:100%;
+     height:100%;
+     color:white;
+     display:none;
+}
