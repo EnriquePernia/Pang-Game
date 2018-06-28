@@ -4,7 +4,7 @@ function Platform(ctx, x, y, x2, y2, crazy) {
     this.y = y;
     this.x2 = x2
     this.y2 = y2
-    this.sX = 0.6;
+    this.sX = 0.9;
     this.img = new Image();
     this.img.src = "images/fragilePlatform.png"
     this.counter = 0;
