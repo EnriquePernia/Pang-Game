@@ -162,7 +162,7 @@
             this.platformsArray = [];
             this.balls = [];
             this.player.x = 500;
-            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"), new Ball(this.ctx, 600, 300, 90, "little"))
+            this.balls.push( new Ball(this.ctx, 120, 100, 115, "medium"), new Ball(this.ctx, 600, 300, 90, "little"))
             this.platformsArray.push(new Platform(this.ctx, 120, 350, 150, 40, true), new Platform(this.ctx, 700, 450, 150, 40, true));
              
        } else if (num == 2) {
