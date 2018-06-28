@@ -100,8 +100,8 @@ Ball.prototype.popLittle = function () {
     pop.push(new Ball(this.ctx, this.x, this.y, this.radius - 49,"veryLittle"));
     pop[0].sX = this.sX;
     pop[1].sX = -this.sX;
-    pop[0].gravity = this.gravity+0.01;
-    pop[1].gravity = this.gravity+0.01;
+    pop[0].gravity = this.gravity+0.016;
+    pop[1].gravity = this.gravity+0.016;
     return pop
 }
 

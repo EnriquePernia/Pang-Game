@@ -99,9 +99,9 @@ Platform.prototype.breakPlatform = function () {
 
 Platform.prototype.update = function (ball, bullet, player) {
     this.draw();
-    if (this.crazy = true) {
+    if (this.crazy == true) {
         this.move();
-        if (this.x < 100 || this.x + this.x2 >700) {
+        if (this.x < 100 || this.x + this.x2 >900) {
         this.getCrazy();
     }
 }

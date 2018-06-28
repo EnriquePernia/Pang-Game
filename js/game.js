@@ -14,7 +14,7 @@
        this.yAux;
        this.platformsArray = [];
        this.platReturn;
-       this.level=0;
+       this.level = 0;
        this.keyboard = new Keyboard();
  }
  Game.prototype.setListeners = function () {
@@ -124,10 +124,10 @@
  }
 
  Game.prototype.platforms = function () {
-      console.log(this.platformsArray)
+       console.log(this.platformsArray)
        for (let i = 0; i < this.platformsArray.length; i++) {
-             if (this.platformsArray.length> 0) {
-                   if (this.platformsArray[i].update(this.balls, this.bullets,this.player) !== false) {
+             if (this.platformsArray.length > 0) {
+                   if (this.platformsArray[i].update(this.balls, this.bullets, this.player) !== false) {
                          this.bullets.splice(this.platReturn, 1);
                    }
              }
@@ -135,22 +135,29 @@
  }
 
  Game.prototype.makeMap = function (num) {
-      this.platformsArray=[];
-       if(num==0){
-            this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"));
+       if (num == 0) {
+             this.platformsArray = [];
+             this.balls = [];
+             this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"));
        }
-      if(num==1){
-       this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40,false), new Platform(this.ctx, 250, 580, 150, 40,false), new Platform(this.ctx, 460, 480, 150, 40,false), new Platform(this.ctx, 680, 380, 150, 40,false));
-      this.balls.push(new Ball(this.ctx, 500, 400, 140,"big"),new Ball(this.ctx,120,100,115,"medium"))
-      }
-      else if(num==2){
-            this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40,true), new Platform(this.ctx, 250, 580, 150, 40,true), new Platform(this.ctx, 460, 480, 150, 40,true), new Platform(this.ctx, 680, 380, 150, 40,true));
-      }
+       if (num == 1) {
+             this.platformsArray = [];
+             this.balls = [];
+             this.player.x=500;
+             this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+             this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
+       } else if (num == 2) {
+             this.platformsArray = [];
+             this.balls = [];
+             this.player.x=500;
+             this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"),new Ball(this.ctx, 600, 300, 90, "little"))
+             this.platformsArray.push(new Platform(this.ctx, 120, 350, 150, 40, true), new Platform(this.ctx, 700, 450, 150, 40, true));
+       }
  }
 
- Game.prototype.selectLevel = function(){
-       if (this.balls.length==0){
-            this.level++;
-            return this.makeMap(this.level);
-       }    
+ Game.prototype.selectLevel = function () {
+       if (this.balls.length == 0) {
+             this.level++;
+             return this.makeMap(this.level);
+       }
  }
