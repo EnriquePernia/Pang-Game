@@ -18,6 +18,7 @@
        this.keyboard = new Keyboard();
        this.audio1 = new Audio("./sound/musicaPastillera.mp3");
        this.audio2 = new Audio("./sound/win.mp3");
+       this.audio3 = new Audio("./sound/pop.mp3");
        this.next = false;
        this.change = false;
        this.points = 0;
@@ -89,6 +90,8 @@
        Game.prototype.ball1 = function () {
              for (j = 0; j < this.balls.length; j++) {
                    if (this.collision = this.balls[j].checkCollisions(this.bullets)) {
+                        this.audio3.pause();
+                        this.audio3.play();
                          if (this.balls[j].type == "big") {
                                this.points += 100;
                          } else if (this.balls[j].type == "medium") {
@@ -184,6 +187,13 @@
              this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
              this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
        }
+       else if (num == 3) {
+            this.platformsArray = [];
+            this.balls = [];
+            this.player.x = 500;
+            this.platformsArray.push(new Platform(this.ctx, 90, 380, 150, 40), new Platform(this.ctx, 300, 480, 150, 40), new Platform(this.ctx, 510, 480, 150, 40), new Platform(this.ctx, 730, 380, 150, 40));
+            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
+      }
  }
 
  Game.prototype.selectLevel = function () {
