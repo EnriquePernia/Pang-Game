@@ -20,6 +20,7 @@
        this.audio2 = new Audio("./sound/win.mp3");
        this.next = false;
        this.change = false;
+       this.points = 0;
  }
 
  Game.prototype.clear = function () {
@@ -27,7 +28,6 @@
  }
  Game.prototype.setListeners = function () {
        document.onkeydown = function (e) {
-             console.log(e.keyCode)
              switch (e.keyCode) {
                    case this.keyboard.keyLeft:
                          this.player.moveLeft();
@@ -51,94 +51,106 @@
                          }
                          break;
              }
-       
- }.bind(this)
- if (this.platformsArray.length > 0) {
-       for (let i = 0; i < this.platformsArray.length; i++) {
-             if (this.platformsArray[i].breakPlatform()) {
-                   this.platformsArray.splice(i, 1);
+
+       }.bind(this)
+       if (this.platformsArray.length > 0) {
+             for (let i = 0; i < this.platformsArray.length; i++) {
+                   if (this.platformsArray[i].breakPlatform()) {
+                         this.platformsArray.splice(i, 1);
+                   }
              }
        }
- }
- document.onkeyup = function (e) {
-       if (e.keyCode == 37 || e.keyCode == 39) {
-             this.player.stop();
-       }
- }.bind(this)
+       document.onkeyup = function (e) {
+             if (e.keyCode == this.keyboard.keyLeft || e.keyCode == this.keyboard.keyRight) {
+                   this.player.stop();
+             }
+       }.bind(this)
 
 
- Game.prototype.bullet = function () {
-       for (i = 0; i < this.bullets.length; i++) {
-             this.bullets[i].update(this.balls[0]);
-             if (this.bullets[i].seeIfLimit()) {
-                   this.bullets.splice(i, 1);
+       Game.prototype.bullet = function () {
+             for (i = 0; i < this.bullets.length; i++) {
+                   this.bullets[i].update(this.balls[0]);
+                   if (this.bullets[i].seeIfLimit()) {
+                         this.bullets.splice(i, 1);
+                   }
              }
        }
- }
- //player
- Game.prototype.player1 = function () {
-       this.player.update(this.balls, this.bullets, this.counter);
-       if (this.startCont == true) {
-             this.popCont++;
+       //player
+       Game.prototype.player1 = function () {
+             this.player.update(this.balls);
+             if (this.startCont == true) {
+                   this.popCont++;
+             }
+             this.ctx.font = "bold 15px white homestead  "
+             this.ctx.fillStyle = 'white';
+             this.ctx.fillText("Points:  " + this.points, 850, 80);;
        }
- }
- //ball
- Game.prototype.ball1 = function () {
-       for (j = 0; j < this.balls.length; j++) {
-             if (this.collision = this.balls[j].checkCollisions(this.bullets)) {
-                   this.startCont = true;
-                   this.xAux = this.balls[j].x;
-                   this.yAux = this.balls[j].y;
+       //ball
+       Game.prototype.ball1 = function () {
+             for (j = 0; j < this.balls.length; j++) {
+                   if (this.collision = this.balls[j].checkCollisions(this.bullets)) {
+                         if (this.balls[j].type == "big") {
+                               this.points += 100;
+                         } else if (this.balls[j].type == "medium") {
+                               this.points += 200;
+                         } else if (this.balls[j].type == "little") {
+                               this.points += 500;
+                         } else {
+                               this.points += 1000;
+                         }
+                         this.startCont = true;
+                         this.xAux = this.balls[j].x;
+                         this.yAux = this.balls[j].y;
 
-                   if (this.balls[j].waiting == true) {
-                         if (this.collision[0].type == "veryLittle") {
+                         if (this.balls[j].waiting == true) {
+                               if (this.collision[0].type == "veryLittle") {
+                                     this.balls.splice(j, 1);
+                                     this.bullets.splice(this.collision[1], 1)
+                               } else {
+                                     this.balls.splice(j, 1);
+                                     this.balls.push(this.collision[0][0])
+                                     this.balls.push(this.collision[0][1])
+                                     this.balls[this.balls.length - 1].stop();
+                                     this.balls[this.balls.length - 2].stop();
+                                     this.bullets.splice(this.collision[1], 1)
+                               }
+                         } else if (this.collision[0].type == "veryLittle") {
                                this.balls.splice(j, 1);
                                this.bullets.splice(this.collision[1], 1)
                          } else {
                                this.balls.splice(j, 1);
                                this.balls.push(this.collision[0][0])
                                this.balls.push(this.collision[0][1])
-                               this.balls[this.balls.length - 1].stop();
-                               this.balls[this.balls.length - 2].stop();
                                this.bullets.splice(this.collision[1], 1)
                          }
-                   } else if (this.collision[0].type == "veryLittle") {
-                         this.balls.splice(j, 1);
-                         this.bullets.splice(this.collision[1], 1)
-                   } else {
-                         this.balls.splice(j, 1);
-                         this.balls.push(this.collision[0][0])
-                         this.balls.push(this.collision[0][1])
-                         this.bullets.splice(this.collision[1], 1)
                    }
-             }
-             if (this.popCont < 15 && this.startCont == true) {
-                   if (this.balls.length == 0) {
-                         this.player.drawPop(this.xAux, this.yAux);
-                   } else {
-                         this.player.drawPop(this.xAux, this.yAux);
-                   }
+                   if (this.popCont < 15 && this.startCont == true) {
+                         if (this.balls.length == 0) {
+                               this.player.drawPop(this.xAux, this.yAux);
+                         } else {
+                               this.player.drawPop(this.xAux, this.yAux);
+                         }
 
-             } else {
-                   this.popCont = 0;
-                   this.startCont = false;
+                   } else {
+                         this.popCont = 0;
+                         this.startCont = false;
+                   }
+                   if (this.balls[j] != undefined) {
+                         this.balls[j].update();
+                   }
              }
-             if (this.balls[j] != undefined) {
-                   this.balls[j].update();
+       }
+       Game.prototype.powerUp = function () {
+             if (this.power.update()) {
+                   this.player.powerUp = this.power.name;
+                   this.power = this.none;
              }
+             if (this.counter > 800) {
+                   this.power = new PowerUp(this.ctx, this.powerUps[Math.floor(Math.random() * 3)], this.player)
+                   this.counter = 0;
+             }
+             this.counter++;
        }
- }
- Game.prototype.powerUp = function () {
-       if (this.power.update()) {
-             this.player.powerUp = this.power.name;
-             this.power = this.none;
-       }
-       if (this.counter > 800) {
-             this.power = new PowerUp(this.ctx, this.powerUps[Math.floor(Math.random() * 3)], this.player)
-             this.counter = 0;
-       }
-       this.counter++;
- }
  }
 
  Game.prototype.platforms = function () {
@@ -159,18 +171,18 @@
              this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"));
        }
        if (num == 1) {
-            this.platformsArray = [];
-            this.balls = [];
-            this.player.x = 500;
-            this.balls.push( new Ball(this.ctx, 120, 100, 115, "medium"), new Ball(this.ctx, 600, 300, 90, "little"))
-            this.platformsArray.push(new Platform(this.ctx, 120, 350, 150, 40, true), new Platform(this.ctx, 700, 450, 150, 40, true));
-             
+             this.platformsArray = [];
+             this.balls = [];
+             this.player.x = 500;
+             this.balls.push(new Ball(this.ctx, 120, 100, 115, "medium"), new Ball(this.ctx, 600, 300, 90, "little"))
+             this.platformsArray.push(new Platform(this.ctx, 120, 350, 150, 40, true), new Platform(this.ctx, 700, 450, 150, 40, true));
+
        } else if (num == 2) {
-            this.platformsArray = [];
-            this.balls = [];
-            this.player.x = 500;
-            this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
-            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
+             this.platformsArray = [];
+             this.balls = [];
+             this.player.x = 500;
+             this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+             this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
        }
  }
 
@@ -200,7 +212,6 @@
        this.ctx.clearRect(0, 0, 1000, 1000)
        this.ctx.font = "bold 30px white homestead  "
        this.ctx.fillStyle = 'white';
-       console.log(this.player.loose)
        if (this.player.loose == true) {
              this.audio1.pause();
              this.ctx.fillText("TRY AGAIN ", 350, 400);

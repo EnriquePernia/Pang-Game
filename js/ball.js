@@ -25,7 +25,7 @@ Ball.prototype.draw = function () {
     this.ctx.save();
     this.ctx.translate(this.x, this.y);
     if (this.hack) {
-        this.ctx.drawImage(this.img2, 0, 0, this.radius+30, this.radius);
+        this.ctx.drawImage(this.img2, 0, 0, this.radius, this.radius);
          } 
          else {
          this.ctx.drawImage(this.img, 0, 0, this.radius, this.radius);
