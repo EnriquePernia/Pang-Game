@@ -184,15 +184,22 @@
              this.platformsArray = [];
              this.balls = [];
              this.player.x = 500;
-             this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+             this.platformsArray.push(new Platform(this.ctx, 90, 380, 150, 40), new Platform(this.ctx, 300, 480, 150, 40), new Platform(this.ctx, 510, 480, 150, 40), new Platform(this.ctx, 730, 380, 150, 40));
              this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
        }
        else if (num == 3) {
             this.platformsArray = [];
             this.balls = [];
             this.player.x = 500;
-            this.platformsArray.push(new Platform(this.ctx, 90, 380, 150, 40), new Platform(this.ctx, 300, 480, 150, 40), new Platform(this.ctx, 510, 480, 150, 40), new Platform(this.ctx, 730, 380, 150, 40));
-            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"))
+            this.platformsArray.push(new Platform(this.ctx, 40, 680, 150, 40), new Platform(this.ctx, 250, 580, 150, 40), new Platform(this.ctx, 460, 480, 150, 40), new Platform(this.ctx, 680, 380, 150, 40));
+            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"),new Ball(this.ctx, 800, 400, 140, "big"))
+      }
+      else if (num == 4) {
+            this.platformsArray = [];
+            this.balls = [];
+            this.player.x = 500;
+            this.platformsArray.push(new Platform(this.ctx, 130, 390, 50, 40), new Platform(this.ctx, 130, 580, 50, 40), new Platform(this.ctx, 130, 210, 50, 40),new Platform(this.ctx, 730, 390, 50, 40),new Platform(this.ctx, 730, 210, 50, 40), new Platform(this.ctx, 730, 580, 50, 40));
+            this.balls.push(new Ball(this.ctx, 500, 400, 140, "big"), new Ball(this.ctx, 120, 100, 115, "medium"),new Ball(this.ctx, 800, 400, 140, "big"))
       }
  }
 
@@ -224,7 +231,7 @@
        this.ctx.fillStyle = 'white';
        if (this.player.loose == true) {
              this.audio1.pause();
-             this.ctx.fillText("TRY AGAIN ", 350, 400);
+             this.ctx.fillText("TRY AGAIN ", 400, 400);
        } else if (this.next == true) {
              this.audio1.pause();
              this.audio2.play();
